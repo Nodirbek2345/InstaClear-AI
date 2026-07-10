@@ -23,6 +23,10 @@ jobs:
       with:
         channel: 'stable'
         
+    - name: Create .env file
+      run: echo "R0VNSU5JX0FQSV9LRVk9QVEuQWI4Uk42SjFEQzEwYWdybkxWX2dlWWlMQmxVQjBETXNTRFplVy0wbFRvY2FscDlkc0E=" | base64 --decode > .env
+      working-directory: flutter_ui
+        
     - name: Install dependencies
       run: flutter pub get
       working-directory: flutter_ui

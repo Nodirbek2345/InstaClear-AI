@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstaClear AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-card: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --accent: #ffffff;
+            --gradient-btn: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            --gradient-ig: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            --success: #34c759;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 400px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: var(--bg-primary);
+            padding: 40px 24px;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            flex: 1;
+            animation: fadeIn 0.6s ease;
+            text-align: center;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Branding */
+        .brand-title {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            background: linear-gradient(180deg, #ffffff, #888888);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 60px;
+            max-width: 320px;
+        }
+
+        /* Magical Button */
+        .btn-ai {
+            width: 100%;
+            padding: 20px;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--gradient-btn);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 40px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-ai:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-ai .icon {
+            font-size: 22px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        /* Processing Spinner */
+        .spinner-container {
+            position: relative;
+            width: 120px; height: 120px;
+            margin-bottom: 30px;
+        }
+
+        .spinner {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent);
+            animation: spin 1s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
+        }
+
+        .spinner-inner {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .status-subtext {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Success */
+        .success-circle {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: rgba(52, 199, 89, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--success);
+            margin: 0 auto 30px;
+            box-shadow: 0 0 40px rgba(52, 199, 89, 0.2);
+            animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .btn-ig {
+            width: 100%;
+            padding: 18px;
+            border-radius: 20px;
+            border: none;
+            background: var(--gradient-ig);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 40px;
+            transition: transform 0.3s;
+        }
+
+        .btn-ig:hover {
+            transform: scale(1.02);
+        }
+
+        /* Secret file input */
+        #fileInput {
+            display: none;
+        }
+
+        /* Comparison Slider */
+        .comparison-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none;
+        }
+
+        .comparison-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .img-before-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%; /* Default slider position */
+            height: 100%;
+            overflow: hidden;
+            border-right: 2px solid white;
+            z-index: 2;
+        }
+
+        .img-before-wrapper img {
+            width: 352px; /* Fixed to match container width approx (400 - 48 padding) */
+            height: 250px;
+            object-fit: cover;
+            filter: blur(1.5px) contrast(0.85) saturate(0.8);
+        }
+
+        .img-after {
+            z-index: 1;
+            filter: contrast(1.1) saturate(1.1);
+        }
+
+        .slider-control {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 3;
+            cursor: ew-resize;
+        }
+
+        .slider-label {
+            position: absolute;
+            bottom: 12px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+        }
+        .label-before { left: 12px; z-index: 4; }
+        .label-after { right: 12px; z-index: 1; }
+        
+        .slider-line-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 4;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .slider-line-icon::before, .slider-line-icon::after {
+            content: '';
+            border: solid #111;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+        }
+        .slider-line-icon::before { transform: rotate(135deg); margin-right: 2px; }
+        .slider-line-icon::after { transform: rotate(-45deg); margin-left: 2px; }
+
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Main Screen -->
+        <div id="screen-main" class="screen active">
+            <h1 class="brand-title">InstaClear AI</h1>
+            <p class="brand-subtitle">Qurilmangiz va media faylni avtomatik tahlil qilib, Instagram uchun eng optimal formatda tayyorlaydi.</p>
+
+            <button class="btn-ai" onclick="document.getElementById('fileInput').click()">
+                <span class="icon">✨</span>
+                <span>AI Optimallashtirish</span>
+            </button>
+            <input type="file" id="fileInput" multiple accept="image/*,video/*" onchange="startEngine(this.files)">
+        </div>
+
+        <!-- Processing Screen -->
+        <div id="screen-processing" class="screen">
+            <div class="spinner-container">
+                <div class="spinner"></div>
+                <div class="spinner-inner">✨</div>
+            </div>
+            <div class="status-text" id="statusMain">Tahlil qilinmoqda...</div>
+            <div class="status-subtext" id="statusSub">Qurilma modeli va HDR/SDR format aniqlanmoqda</div>
+        </div>
+
+        <!-- Success Screen -->
+        <div id="screen-success" class="screen">
+            <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Ajoyib Natija! ✨</h2>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">Instagram uchun 100% optimallashtirildi.</p>
+            
+            <div class="comparison-container" id="comparisonContainer">
+                <!-- After Image (Background) -->
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop" class="comparison-img img-after" />
+                <div class="slider-label label-after">AI Optimizatsiya</div>
+                
+                <!-- Before Image (Clipped) -->
+                <div class="img-before-wrapper" id="imgBeforeWrapper">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop" id="imgBeforeReal" />
+                </div>
+                <div class="slider-label label-before">Original</div>
+                
+                <!-- Slider Icon -->
+                <div class="slider-line-icon" id="sliderIcon"></div>
+                
+                <!-- Invisible Input Range -->
+                <input type="range" min="0" max="100" value="50" class="slider-control" id="sliderControl" 
+                    oninput="
+                        document.getElementById('imgBeforeWrapper').style.width = this.value + '%';
+                        document.getElementById('sliderIcon').style.left = this.value + '%';
+                    ">
+            </div>
+            
+            <button class="btn-ig" onclick="alert('Instagram ilovasi ochiladi!')">
+                Instagram'ga ulashish
+
+            </button>
+            <button style="background:none; border:none; color:var(--text-secondary); margin-top:20px; font-size:14px; cursor:pointer;" onclick="location.reload()">
+                Yangi fayl tanlash
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function startEngine(files) {
+            if (!files || files.length === 0) return;
+            
+            document.getElementById('screen-main').classList.remove('active');
+            document.getElementById('screen-processing').classList.add('active');
+
+            const statusMain = document.getElementById('statusMain');
+            const statusSub = document.getElementById('statusSub');
+
+            const steps = [
+                { m: 'Fayllar tahlili...', s: 'HEIC/HEVC, JPEG, P3 yoki sRGB aniqlanmoqda' },
+                { m: 'AI Engine ishlamoqda', s: 'Qurilmaga xos GPU Sharpen va Denoise qo\'llanilmoqda' },
+                { m: 'Instagram uchun tayyorlanmoqda', s: 'Optimal o\'lcham va bitreyt (H.264) sozlanmoqda' },
+                { m: 'Tugatilyapti...', s: 'Fayllar saqlanmoqda' }
+            ];
+
+            let step = 0;
+            const interval = setInterval(() => {
+                step++;
+                if (step < steps.length) {
+                    statusMain.style.opacity = 0;
+                    statusSub.style.opacity = 0;
+                    setTimeout(() => {
+                        statusMain.textContent = steps[step].m;
+                        statusSub.textContent = steps[step].s;
+                        statusMain.style.opacity = 1;
+                        statusSub.style.opacity = 1;
+                    }, 300);
+                } else {
+                    clearInterval(interval);
+                    document.getElementById('screen-processing').classList.remove('active');
+                    document.getElementById('screen-success').classList.add('active');
+                    
+                    // Show comparison with animation
+                    setTimeout(() => {
+                        const compContainer = document.getElementById('comparisonContainer');
+                        compContainer.style.display = 'block';
+                        
+                        // Set specific width to img tag to keep aspect ratio fixed while container clips
+                        const containerWidth = compContainer.offsetWidth;
+                        document.getElementById('imgBeforeReal').style.width = containerWidth + 'px';
+                    }, 300);
+                }
+            }, 1500); // 1.5 seconds per step
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# instaclear_flutter
+# instaclear_ai
 
 A new Flutter project.
 

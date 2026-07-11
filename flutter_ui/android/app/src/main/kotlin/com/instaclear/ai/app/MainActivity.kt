@@ -1,4 +1,4 @@
-package com.instaclear.instaclear_flutter
+package com.instaclear.ai.app
 
 import io.flutter.embedding.android.FlutterActivity
 

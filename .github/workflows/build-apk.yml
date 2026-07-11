@@ -22,10 +22,35 @@ jobs:
       uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
-        
+
     - name: Create .env file
       run: echo "R0VNSU5JX0FQSV9LRVk9QVEuQWI4Uk42SjFEQzEwYWdybkxWX2dlWWlMQmxVQjBETXNTRFplVy0wbFRvY2FscDlkc0E=" | base64 --decode > .env
       working-directory: flutter_ui
+
+    # Generate a release keystore for signing
+    - name: Generate release keystore
+      run: |
+        keytool -genkey -v \
+          -keystore release-keystore.jks \
+          -keyalg RSA \
+          -keysize 2048 \
+          -validity 10000 \
+          -alias instaclear \
+          -storepass instaclear2024 \
+          -keypass instaclear2024 \
+          -dname "CN=InstaClear AI, OU=Development, O=InstaClear, L=Tashkent, ST=Tashkent, C=UZ"
+      working-directory: flutter_ui/android
+
+    # Create key.properties for Gradle to read
+    - name: Create key.properties
+      run: |
+        cat > key.properties << EOF
+        storePassword=instaclear2024
+        keyPassword=instaclear2024
+        keyAlias=instaclear
+        storeFile=../release-keystore.jks
+        EOF
+      working-directory: flutter_ui/android
         
     - name: Install dependencies
       run: flutter pub get

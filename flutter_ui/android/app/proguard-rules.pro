@@ -5,6 +5,11 @@
 -keep class io.flutter.view.** { *; }
 -keep class io.flutter.** { *; }
 -keep class io.flutter.plugins.** { *; }
+-keep class io.flutter.embedding.** { *; }
+
+# Google Play Core / Deferred Components (Flutter references these)
+-keep class com.google.android.play.core.** { *; }
+-dontwarn com.google.android.play.core.**
 
 # Keep Google Generative AI classes
 -keep class com.google.ai.** { *; }

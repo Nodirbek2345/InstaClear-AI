@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -84,6 +82,7 @@ class _PickerScreenState extends State<PickerScreen>
         
         final Uint8List fileBytes = await firstFile.readAsBytes();
 
+        if (!mounted) return;
         Navigator.push(
           context,
           PageRouteBuilder(
@@ -126,7 +125,7 @@ class _PickerScreenState extends State<PickerScreen>
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF6366F1).withOpacity(0.5),
+                          color: const Color(0xFF6366F1).withValues(alpha: 0.5),
                           blurRadius: 20 + _pulseAnimation.value,
                           spreadRadius: _pulseAnimation.value / 2,
                         ),
@@ -177,18 +176,18 @@ class _PickerScreenState extends State<PickerScreen>
                       end: Alignment.bottomRight,
                     ),
                     border:
-                        Border.all(color: Colors.white.withOpacity(0.1)),
+                        Border.all(color: Colors.white.withValues(alpha: 0.1)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                         blurRadius: 40,
                         offset: const Offset(0, 10),
                       )
                     ],
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text('✨', style: TextStyle(fontSize: 22)),
                       SizedBox(width: 12),
                       Text(
@@ -347,10 +346,10 @@ class _ProcessingScreenState extends State<ProcessingScreen>
                 height: 180,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
-                  color: Colors.grey[900], // Background for video
+                  color: Colors.grey[900],
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF6366F1).withOpacity(0.3),
+                      color: const Color(0xFF6366F1).withValues(alpha: 0.3),
                       blurRadius: 30,
                     )
                   ],
@@ -365,9 +364,8 @@ class _ProcessingScreenState extends State<ProcessingScreen>
                       else
                         Image.memory(widget.fileBytes, fit: BoxFit.cover),
                       
-                      // Processing overlay
                       Container(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                         child: Center(
                           child: RotationTransition(
                             turns: _rotationController,
@@ -377,11 +375,11 @@ class _ProcessingScreenState extends State<ProcessingScreen>
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                    color: Colors.white.withOpacity(0.3),
+                                    color: Colors.white.withValues(alpha: 0.3),
                                     width: 2),
                                 gradient: SweepGradient(
                                   colors: [
-                                    Colors.white.withOpacity(0),
+                                    Colors.white.withValues(alpha: 0),
                                     const Color(0xFF6366F1),
                                   ],
                                 ),
@@ -420,7 +418,7 @@ class _ProcessingScreenState extends State<ProcessingScreen>
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
+                    color: Colors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -491,7 +489,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
                     color: Colors.grey[900], // For videos
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black.withOpacity(0.8),
+                          color: Colors.black.withValues(alpha: 0.8),
                           blurRadius: 30,
                           offset: const Offset(0, 15))
                     ],
@@ -512,8 +510,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Row(
-                        children: const [
+                      content: const Row(
+                        children: [
                           Icon(Icons.check_circle, color: Colors.white),
                           SizedBox(width: 12),
                           Text('Fayl Instagram\'ga yuborilmoqda...'),
@@ -543,15 +541,15 @@ class _SuccessScreenState extends State<SuccessScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFdc2743).withOpacity(0.4),
+                        color: const Color(0xFFdc2743).withValues(alpha: 0.4),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       )
                     ],
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(Icons.camera_alt,
                           color: Colors.white, size: 22),
                       SizedBox(width: 10),
@@ -682,7 +680,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
                     boxShadow: [
                       BoxShadow(
                           color: Colors.black
-                              .withOpacity(0.6),
+                              .withValues(alpha: 0.6),
                           blurRadius: 12)
                     ],
                   ),
@@ -703,11 +701,11 @@ class _SuccessScreenState extends State<SuccessScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.85),
+        color: color.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.3), blurRadius: 8)
+              color: Colors.black.withValues(alpha: 0.3), blurRadius: 8)
         ],
       ),
       child: Text(text,
